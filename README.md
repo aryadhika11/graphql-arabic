@@ -44,20 +44,20 @@ There are two tables the user table which has employeeId as primary and foreign 
 ```
 mutation {
   registerUser(
-    email: "b@gmail.com"
-    password: "polo30"
-    firstName: "arnav"
-    lastName: "chauhan"
-    employeeId: 2
-    company: "wee"
-  ) {
-    token
-    user {
-      firstName
-      lastName
+      name: "Judika"
+      email: "Judika@gmail.com"
+      password: "polo30"
+  )
+  {
+      id
+      name
       email
+      password
+      date
+      exp
+      points
+      avatar
     }
-  }
 }
 ```
 ### Login
@@ -66,27 +66,187 @@ mutation {
   login(email: "b@gmail.com", password: "polo30") {
     token
     user {
-      firstName
-      lastName
-      email
+        id
+        name
+        email
+        password
+        date
+        exp
+        points
+        avatar
     }
   }
 }
 ```
-### GetUserList
-search: firstName,lastName,employeeId
+### Update Profile
 ```
-query myself {
-  getUserList(
-    pagination: { items: 2, page: 1 }
-    search: { employeeId: 2 }
-    sort: "employeeId"
-  ) {
+mutation updateUser {
+  updateUser(
+      name: "dika"
+      email : "aryadhika2020@gmail.com"
+      password : "polo30"
+      avatar : "https://res.cloudinary.com/de24jpu9k/image/upload/v1671761158/cld-sample.jpg"
+      ) {
+    name
     email
-    firstName
-    employeeId
-    company
+    password
+    avatar
   }
+}
+
+```
+### Forgot Password
+```
+mutation{
+    forgotPassword(email: "jika@gmail.com", password: "polo30"){
+        email
+        password
+    }
+}
+
+```
+### Admin/Upload Soal
+```
+mutation uploadsoal {
+    uploadSoal(
+        category: "listening",
+        episode: 1,
+        level: 7,
+        question: "Sajjaadatun",
+        answer1: "Sajjaatun",
+        answer2: "Sajjadutan",
+        answer3: "Sajjaadatun",
+        answer4: "Sujjaadatun",
+        correctanswer: 3
+    ){
+        category
+        episode
+        question
+        answer1
+        answer2
+        answer3
+        answer4
+        correctanswer
+    }
+}
+
+```
+### Get Level Detail
+```
+mutation savedUserProgress {
+    savedUserProgress(
+    category: "reading"
+    episode: 1
+    level: 1
+    isCompleted: false
+    ) {
+    category
+    episode
+    level
+    createdAt
+    isCompleted
+  }
+}
+
+```
+### Get Profile User
+```
+query {
+    getProfile{
+        userCheck{
+          id
+        name
+        email
+        password
+        date
+        exp
+        points
+        avatar
+        }
+        level
+        rank
+    }
+}
+
+```
+### Get User Saved Level
+```
+query getUserSavedLevel {
+    getUserSavedLevel(
+        category:"listening"
+        episode: 1
+    )
+    {
+    id,
+    category,
+    episode,
+    level,
+    createdAt,
+    isCompleted  
+    }
+}
+
+```
+### Get Level List
+```
+query{
+    getUserLevel(
+        category: "listening",
+        episode: 1
+    ){
+    id
+    category
+    episode
+    level
+    question
+    answer1
+    answer2
+    answer3
+    answer4
+    correctanswer
+    sound
+    isCompleted
+    }
+}
+
+```
+### Get Progress
+```
+query{
+    getProgress(
+        category: "listening",
+        episode: 1
+    ){
+        true
+        false
+        notStarted
+    }
+}
+
+```
+### Get Episode
+```
+query {
+    getEpisode (
+        category: "listening"
+    ){
+        episode 
+        progress
+        level
+    }
+}
+
+```
+### Get Leaderboard
+```
+query{
+    getLeaderboard{
+        id
+        name
+        exp
+        points
+        avatar
+    }
 }
 
 ```

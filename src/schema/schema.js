@@ -1,34 +1,95 @@
 const { gql } = require('apollo-server')
 
-const typeDefs = gql`
-    input Pagination {
-        page: Int!
-        items: Int!
-    }
-    input UserFilter {
-        employeeId: Int
-        firstName: String
-        lastName: String
-    }
+const typeDefs = gql `
+scalar Date
+     
     type User {
-        employeeId: Int!
-        firstName: String!
-        lastName: String!
-        password: String
+        id: ID!
+        name: String!
         email: String!
-        company: String!
+        password: String!
+        date: Date
+        exp: Int!
+        points: Int!
+        avatar : String!
     }
     type AuthPayload {
         token: String!
         user: User!
     }
+    enum Category {
+        reading
+        writing 
+        listening
+        speaking
+    }
+    type Level {
+        id: Int!
+        category : Category!
+        episode: Int!
+        level: Int!
+        question: String!
+        answer1: String!
+        answer2: String!
+        answer3: String!
+        answer4: String!
+        correctanswer: Int!
+        sound: String!
+    }
+    type SavedLevel {
+        id: ID!
+        category: String!
+        episode: Int!
+        level: Int!
+        createdAt: Date
+        isCompleted: Boolean!
+    }
+    type UserLevel{
+        id: ID!
+        category : Category!
+        episode: Int!
+        level: Int!
+        question: String!
+        answer1: String!
+        answer2: String!
+        answer3: String!
+        answer4: String!
+        correctanswer: Int!
+        sound: String
+        isCompleted: Boolean
+    }
+    type Progress {
+        true: Int!
+        false: Int!
+        notStarted: Int!
+    }
+    type Profile{
+        userCheck: User!
+        level: Int!
+        rank: Int!
+    }
+    type GetEpisode {
+        episode: Int!
+        progress: Float!
+        level: Int!
+    }
     type Query {
-        getUserList(search:UserFilter, pagination:Pagination, sort:String): [User]
+        getProfile: Profile!
+        getUserSavedLevel(category: String!, episode:Int!): SavedLevel!
+        getUserLevel(category: String!, episode:Int!): [UserLevel]!
+        getProgress(category: String!, episode:Int!): Progress!
+        getEpisode(category: String!): [GetEpisode]!
+        getLeaderboard: [User]!
     }
     type Mutation {
-        registerUser(firstName: String!, lastName: String!, employeeId: Int!, email: String!, password: String!, company: String!): AuthPayload!
+        registerUser( name: String!, email: String!, password: String!): User!
         login (email: String!, password: String!): AuthPayload!
-    }
+        forgotPassword(email: String!, password: String!): User!
+        updateUser(name: String!, email: String!, password: String!, avatar: String!): User!
+        savedUserProgress(category: String!, episode: Int!, level: Int!, isCompleted: Boolean!): SavedLevel!
+
+        uploadSoal(category: String!, episode: Int!, level: Int!, question: String!, answer1: String!, answer2: String!, answer3: String!, answer4: String!, correctanswer: Int!): Level!
+}
 `
 
 module.exports = typeDefs

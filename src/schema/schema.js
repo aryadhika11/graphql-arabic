@@ -12,6 +12,8 @@ scalar Date
         exp: Int!
         points: Int!
         avatar : String!
+        level: Int
+        rank: Int
     }
     type AuthPayload {
         token: String!
@@ -61,7 +63,7 @@ scalar Date
         level: Int!
     }
     type Query {
-        getProfile: Profile!
+        getProfile: [User]!
         getUserSavedLevel(category: String!, episode:Int!): SavedLevel!
         getUserLevel(category: String!, episode:Int!): [Level]!
         getProgress(category: String!, episode:Int!): Progress!

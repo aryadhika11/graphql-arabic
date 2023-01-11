@@ -11,6 +11,7 @@ const resolvers = {
     Query: {
         async getProfile(root, args, { user }) {
             try {
+                let tampung = []
                 if (!user) throw new Error('You are not authenticated!');
                 const userCheck = await models.user.findOne({
                     where: {
@@ -37,11 +38,16 @@ const resolvers = {
                     }
                 });
 
-                return {
-                    userCheck,
-                    level,
-                    rank
+                const data = JSON.parse(JSON.stringify(userCheck));
+                const obj = {
+                    ...data,
+                    level: level,
+                    rank: rank
                 }
+                tampung.push(obj)
+
+                return tampung
+
             } catch (error) {
                 throw new Error(error.message)
             }
@@ -57,7 +63,7 @@ const resolvers = {
                         episode: episode
                     },
                 });
-                console.log(getUserSavedLevel)
+                // console.log(getUserSavedLevel)
                 return getUserSavedLevel;
             } catch (error) {
                 throw new Error(error.message)
@@ -480,9 +486,6 @@ const resolvers = {
         description: 'Date custom scalar type',
         parseValue(value) {
             return new Date(value); // value from the client
-        },
-        serialize(value) {
-            return value.getTime(); // value sent to the client
         },
         parseLiteral(ast) {
             if (ast.kind === Kind.INT) {

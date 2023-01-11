@@ -52,11 +52,6 @@ scalar Date
         false: Int!
         notStarted: Int!
     }
-    type Profile{
-        userCheck: User!
-        level: Int!
-        rank: Int!
-    }
     type GetEpisode {
         episode: Int!
         progress: Float!

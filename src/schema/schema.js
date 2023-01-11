@@ -34,7 +34,8 @@ scalar Date
         answer3: String!
         answer4: String!
         correctanswer: Int!
-        sound: String!
+        sound: String
+        isCompleted: Boolean
     }
     type SavedLevel {
         id: ID!
@@ -43,20 +44,6 @@ scalar Date
         level: Int!
         createdAt: Date
         isCompleted: Boolean!
-    }
-    type UserLevel{
-        id: ID!
-        category : Category!
-        episode: Int!
-        level: Int!
-        question: String!
-        answer1: String!
-        answer2: String!
-        answer3: String!
-        answer4: String!
-        correctanswer: Int!
-        sound: String
-        isCompleted: Boolean
     }
     type Progress {
         true: Int!
@@ -76,7 +63,7 @@ scalar Date
     type Query {
         getProfile: Profile!
         getUserSavedLevel(category: String!, episode:Int!): SavedLevel!
-        getUserLevel(category: String!, episode:Int!): [UserLevel]!
+        getUserLevel(category: String!, episode:Int!): [Level]!
         getProgress(category: String!, episode:Int!): Progress!
         getEpisode(category: String!): [GetEpisode]!
         getLeaderboard: [User]!

@@ -11,8 +11,14 @@ const resolvers = {
     Query: {
         async getProfile(root, args, { user }) {
             try {
+                //array tampung
                 let tampung = []
+
+                //memeriksa apakah user sudah melakukan proses login
                 if (!user) throw new Error('You are not authenticated!');
+
+                //mendapatkan seluruh kolom dari tabel user dimana harus sesuai dengan id yang diinput
+                //findOne digunakan untuk menghasilkan nilai satu baris yang sama
                 const userCheck = await models.user.findOne({
                     where: {
                         id: user.id
@@ -20,9 +26,12 @@ const resolvers = {
                     raw: true
                 })
 
+                //nilai exp dibagi 100 menjadi nilai variabel level
                 let level = userCheck.exp / 1000
                 level = Math.floor(level) + 1;
 
+                //mendapatkan kolom id dan points dari tabel user dengan mengurutkan dari kolom points secara DESCENDING
+                //findAll digunakan untuk menghasilkan baris lebih dari 1
                 const leaderboard = await models.user.findAll({
                     attributes: ['id', 'points'],
                     order: [
@@ -31,19 +40,25 @@ const resolvers = {
                     raw: true
                 });
 
-                let rank = 0
+                let rank = 0;
+                //forEach digunakan untuk mengambil nilai array dari variabel leaderboard
                 leaderboard.forEach((item, index) => {
                     if (item.id === user.id) {
                         rank = index + 1;
                     }
                 });
 
+                //mengubah data menjadi bentuk JSON
                 const data = JSON.parse(JSON.stringify(userCheck));
+
+                //menampung kumpulan data ke dalam satu objek
                 const obj = {
                     ...data,
                     level: level,
                     rank: rank
                 }
+
+                //objek dikirimkan ke array tampung
                 tampung.push(obj)
 
                 return tampung

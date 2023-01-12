@@ -11,7 +11,7 @@ const resolvers = {
     Query: {
         async getProfile(root, args, { user }) {
             try {
-                //array tampung
+
                 let tampung = []
 
                 //memeriksa apakah user sudah melakukan proses login
@@ -70,11 +70,7 @@ const resolvers = {
 
         async getUserSavedLevel(root, { category, episode }, { user }) {
             try {
-                //cek apakah user sudah melakukan proses login
                 if (!user) throw new Error('You are not authenticated!');
-
-                //mendapatkan seluruh kolom dari tabel user dimana harus sesuai dengan id, category, dan episode yang diinput
-                //findOne digunakan untuk menghasilkan nilai satu baris yang sama
                 const getUserSavedLevel = await models.savedlevel.findOne({
                     where: {
                         id: user.id,
